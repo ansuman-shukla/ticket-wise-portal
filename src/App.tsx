@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -37,35 +36,35 @@ const App = () => (
             {/* User Routes */}
             <Route path="/user" element={
               <ProtectedRoute>
-                <RoleRoute allowedRoles={["USER"]}>
+                <RoleRoute allowedRoles={["user"]}>
                   <Navigate to="/user/dashboard" replace />
                 </RoleRoute>
               </ProtectedRoute>
             } />
             <Route path="/user/dashboard" element={
               <ProtectedRoute>
-                <RoleRoute allowedRoles={["USER"]}>
+                <RoleRoute allowedRoles={["user"]}>
                   <UserDashboard />
                 </RoleRoute>
               </ProtectedRoute>
             } />
             <Route path="/user/tickets/new" element={
               <ProtectedRoute>
-                <RoleRoute allowedRoles={["USER"]}>
+                <RoleRoute allowedRoles={["user"]}>
                   <CreateTicket />
                 </RoleRoute>
               </ProtectedRoute>
             } />
             <Route path="/user/tickets" element={
               <ProtectedRoute>
-                <RoleRoute allowedRoles={["USER"]}>
+                <RoleRoute allowedRoles={["user"]}>
                   <MyTickets />
                 </RoleRoute>
               </ProtectedRoute>
             } />
             <Route path="/user/tickets/:id" element={
               <ProtectedRoute>
-                <RoleRoute allowedRoles={["USER"]}>
+                <RoleRoute allowedRoles={["user"]}>
                   <TicketDetail />
                 </RoleRoute>
               </ProtectedRoute>
@@ -74,28 +73,28 @@ const App = () => (
             {/* Agent Routes */}
             <Route path="/agent" element={
               <ProtectedRoute>
-                <RoleRoute allowedRoles={["IT_AGENT", "HR_AGENT"]}>
+                <RoleRoute allowedRoles={["it_agent", "hr_agent"]}>
                   <Navigate to="/agent/dashboard" replace />
                 </RoleRoute>
               </ProtectedRoute>
             } />
             <Route path="/agent/dashboard" element={
               <ProtectedRoute>
-                <RoleRoute allowedRoles={["IT_AGENT", "HR_AGENT"]}>
+                <RoleRoute allowedRoles={["it_agent", "hr_agent"]}>
                   <AgentDashboard />
                 </RoleRoute>
               </ProtectedRoute>
             } />
             <Route path="/agent/tickets" element={
               <ProtectedRoute>
-                <RoleRoute allowedRoles={["IT_AGENT", "HR_AGENT"]}>
+                <RoleRoute allowedRoles={["it_agent", "hr_agent"]}>
                   <AgentTickets />
                 </RoleRoute>
               </ProtectedRoute>
             } />
             <Route path="/agent/tickets/:id" element={
               <ProtectedRoute>
-                <RoleRoute allowedRoles={["IT_AGENT", "HR_AGENT"]}>
+                <RoleRoute allowedRoles={["it_agent", "hr_agent"]}>
                   <AgentTicketDetail />
                 </RoleRoute>
               </ProtectedRoute>
@@ -104,35 +103,35 @@ const App = () => (
             {/* Admin Routes */}
             <Route path="/admin" element={
               <ProtectedRoute>
-                <RoleRoute allowedRoles={["ADMIN"]}>
+                <RoleRoute allowedRoles={["admin"]}>
                   <Navigate to="/admin/dashboard" replace />
                 </RoleRoute>
               </ProtectedRoute>
             } />
             <Route path="/admin/dashboard" element={
               <ProtectedRoute>
-                <RoleRoute allowedRoles={["ADMIN"]}>
+                <RoleRoute allowedRoles={["admin"]}>
                   <AdminDashboard />
                 </RoleRoute>
               </ProtectedRoute>
             } />
             <Route path="/admin/tickets" element={
               <ProtectedRoute>
-                <RoleRoute allowedRoles={["ADMIN"]}>
+                <RoleRoute allowedRoles={["admin"]}>
                   <AdminTickets />
                 </RoleRoute>
               </ProtectedRoute>
             } />
             <Route path="/admin/misuse-reports" element={
               <ProtectedRoute>
-                <RoleRoute allowedRoles={["ADMIN"]}>
+                <RoleRoute allowedRoles={["admin"]}>
                   <AdminMisuseReports />
                 </RoleRoute>
               </ProtectedRoute>
             } />
             <Route path="/admin/system" element={
               <ProtectedRoute>
-                <RoleRoute allowedRoles={["ADMIN"]}>
+                <RoleRoute allowedRoles={["admin"]}>
                   <AdminSystem />
                 </RoleRoute>
               </ProtectedRoute>

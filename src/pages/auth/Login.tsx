@@ -21,8 +21,8 @@ const Login: React.FC = () => {
 
   React.useEffect(() => {
     if (user) {
-      const route = user.role === 'USER' ? '/user/dashboard' 
-                  : user.role === 'ADMIN' ? '/admin/dashboard'
+      const route = user.role === 'user' ? '/user/dashboard' 
+                  : user.role === 'admin' ? '/admin/dashboard'
                   : '/agent/dashboard';
       navigate(route);
     }

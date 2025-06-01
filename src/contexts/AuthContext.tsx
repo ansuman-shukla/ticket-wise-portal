@@ -1,7 +1,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-export type UserRole = 'USER' | 'IT_AGENT' | 'HR_AGENT' | 'ADMIN';
+export type UserRole = 'user' | 'it_agent' | 'hr_agent' | 'admin';
 
 export interface User {
   id: string;
@@ -29,6 +29,8 @@ export const useAuth = () => {
   return context;
 };
 
+const API_BASE_URL = 'http://localhost:8000';
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
@@ -49,50 +51,55 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const login = async (credentials: { username: string; password: string }) => {
     setIsLoading(true);
     try {
-      // Simulate API call - replace with actual API endpoint
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Mock response based on username for demo
-      let mockUser: User;
-      if (credentials.username === 'admin') {
-        mockUser = {
-          id: '1',
-          username: 'admin',
-          email: 'admin@company.com',
-          role: 'ADMIN'
-        };
-      } else if (credentials.username === 'itagent') {
-        mockUser = {
-          id: '2',
-          username: 'itagent',
-          email: 'it@company.com',
-          role: 'IT_AGENT',
-          department: 'IT'
-        };
-      } else if (credentials.username === 'hragent') {
-        mockUser = {
-          id: '3',
-          username: 'hragent',
-          email: 'hr@company.com',
-          role: 'HR_AGENT',
-          department: 'HR'
-        };
-      } else {
-        mockUser = {
-          id: '4',
-          username: credentials.username,
-          email: `${credentials.username}@company.com`,
-          role: 'USER'
-        };
+      const response = await fetch(`${API_BASE_URL}/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(credentials),
+      });
+
+      if (!response.ok) {
+        throw new Error('Invalid credentials');
       }
 
-      const mockToken = 'mock-jwt-token-' + mockUser.id;
+      const data = await response.json();
+      const { access_token } = data;
+
+      // Get user info
+      const userResponse = await fetch(`${API_BASE_URL}/auth/me`, {
+        headers: {
+          'Authorization': `Bearer ${access_token}`,
+        },
+      });
+
+      if (!userResponse.ok) {
+        throw new Error('Failed to get user info');
+      }
+
+      const userData = await userResponse.json();
       
-      setUser(mockUser);
-      setToken(mockToken);
+      // Map backend role to frontend role format
+      const roleMap: Record<string, UserRole> = {
+        'user': 'user',
+        'it_agent': 'it_agent',
+        'hr_agent': 'hr_agent',
+        'admin': 'admin'
+      };
+
+      const mappedUser: User = {
+        id: userData.id || userData.user_id || '1',
+        username: userData.username,
+        email: userData.email,
+        role: roleMap[userData.role] || 'user',
+        department: userData.role === 'it_agent' ? 'IT' : userData.role === 'hr_agent' ? 'HR' : undefined
+      };
+
+      setUser(mappedUser);
+      setToken(access_token);
       
-      localStorage.setItem('auth_token', mockToken);
-      localStorage.setItem('auth_user', JSON.stringify(mockUser));
+      localStorage.setItem('auth_token', access_token);
+      localStorage.setItem('auth_user', JSON.stringify(mappedUser));
     } catch (error) {
       console.error('Login failed:', error);
       throw new Error('Invalid credentials');

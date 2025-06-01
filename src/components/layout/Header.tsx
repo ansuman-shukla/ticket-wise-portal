@@ -23,12 +23,12 @@ export const Header: React.FC = () => {
 
   const getHomeRoute = () => {
     switch (user?.role) {
-      case 'USER':
+      case 'user':
         return '/user/dashboard';
-      case 'IT_AGENT':
-      case 'HR_AGENT':
+      case 'it_agent':
+      case 'hr_agent':
         return '/agent/dashboard';
-      case 'ADMIN':
+      case 'admin':
         return '/admin/dashboard';
       default:
         return '/login';
@@ -37,14 +37,29 @@ export const Header: React.FC = () => {
 
   const getRoleColor = (role: string) => {
     switch (role) {
-      case 'ADMIN':
+      case 'admin':
         return 'bg-red-100 text-red-800';
-      case 'IT_AGENT':
+      case 'it_agent':
         return 'bg-blue-100 text-blue-800';
-      case 'HR_AGENT':
+      case 'hr_agent':
         return 'bg-green-100 text-green-800';
       default:
         return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const getRoleDisplayName = (role: string) => {
+    switch (role) {
+      case 'it_agent':
+        return 'IT Agent';
+      case 'hr_agent':
+        return 'HR Agent';
+      case 'admin':
+        return 'Admin';
+      case 'user':
+        return 'User';
+      default:
+        return role;
     }
   };
 
@@ -57,7 +72,7 @@ export const Header: React.FC = () => {
           </Link>
           {user && (
             <Badge className={getRoleColor(user.role)}>
-              {user.role.replace('_', ' ')}
+              {getRoleDisplayName(user.role)}
               {user.department && ` - ${user.department}`}
             </Badge>
           )}
@@ -66,7 +81,7 @@ export const Header: React.FC = () => {
         {user && (
           <div className="flex items-center space-x-4">
             <nav className="hidden md:flex space-x-4">
-              {user.role === 'USER' && (
+              {user.role === 'user' && (
                 <>
                   <Link to="/user/dashboard" className="text-gray-600 hover:text-blue-600">
                     Home
@@ -76,7 +91,7 @@ export const Header: React.FC = () => {
                   </Link>
                 </>
               )}
-              {(user.role === 'IT_AGENT' || user.role === 'HR_AGENT') && (
+              {(user.role === 'it_agent' || user.role === 'hr_agent') && (
                 <>
                   <Link to="/agent/dashboard" className="text-gray-600 hover:text-blue-600">
                     Home
@@ -86,7 +101,7 @@ export const Header: React.FC = () => {
                   </Link>
                 </>
               )}
-              {user.role === 'ADMIN' && (
+              {user.role === 'admin' && (
                 <>
                   <Link to="/admin/dashboard" className="text-gray-600 hover:text-blue-600">
                     Dashboard
